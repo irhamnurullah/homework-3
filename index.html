@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+		<link
+			rel="stylesheet"
+			href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+			integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+			crossorigin="anonymous"
+		/>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.5.1/moment.min.js"></script>
+
+		<style>
+			.container {
+				margin-top: 10%;
+				color: white;
+			}
+			body {
+				background-color: black;
+				font-size: medium;
+			}
+		</style>
+	</head>
+	<body>
+		<!-- bagian kiri -->
+		<div class="container d-flex text-center">
+			<div
+				class="mr-2"
+				style="
+					background: radial-gradient(circle at top right, #a93ad8, #022d6d);
+					width: 50%;
+					border-radius: 20px;
+				"
+			>
+				<div class="h4 m-5" id="date">date</div>
+				<div class="h4 m-5" id="time">time</div>
+			</div>
+
+			<div
+				class="mt-0 pt-2 pb-5"
+				style="
+					background: radial-gradient(circle at top left, #a93ad8, #022d6d);
+					width: 75%;
+					border-radius: 20px;
+				"
+			>
+				<p class="h5">Conversion Temperature</p>
+				<div class="h6 m-3">
+					<select name="from" id="from" onchange="select()">
+						<option value="cel">Celcius</option>
+						<option value="far">Farenheit</option>
+						<option value="rea">Reamur</option>
+					</select>
+					to
+					<select name="to" id="to" onchange="select()">
+						<option value="cel">Celcius</option>
+						<option value="far">Farenheit</option>
+						<option value="rea">Reamur</option>
+					</select>
+				</div>
+				<div>
+					<div class="row">
+						<div class="col-5">
+							<input
+								type="number"
+								id="num1"
+								class="form-control"
+								placeholder="Number"
+								onkeyup="conv()"
+							/>
+						</div>
+						<div class="col-2 h6">=</div>
+						<div class="col-5">
+							<input
+								type="number"
+								id="result"
+								class="form-control"
+								placeholder="Result"
+								disabled
+							/>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="container">
+			<input
+				class="form-control"
+				id="color"
+				style="width: min-content"
+				placeholder="Change Background Color"
+			/><button type="button" class="btn btn-primary mt-2" onclick="change()">Change</button>
+		</div>
+	</body>
+	<script src="./script.js"></script>
+	<script>
+		$(document).ready(function () {
+			var interval = setInterval(function () {
+				var momentNow = moment();
+				$("#date").html(
+					momentNow.format("DD MMMM YYYY") + " " + momentNow.format("dddd").substring(0, 3)
+				);
+				$("#time").html(momentNow.format("hh:mm:ss A  "));
+			}, 100);
+		});
+
+		function select() {
+			document.getElementById("num1").value = "";
+			document.getElementById("result").value = "";
+		}
+
+		const convert = new Convert();
+		function conv() {
+			if (document.getElementById("from").value == "cel") {
+				const res = convert.fromCelcius(
+					document.getElementById("to").value,
+					parseInt(document.getElementById("num1").value)
+				);
+				document.getElementById("result").value = res;
+			}
+			if (document.getElementById("from").value == "rea") {
+				const res = convert.fromReamur(
+					document.getElementById("to").value,
+					parseInt(document.getElementById("num1").value)
+				);
+				document.getElementById("result").value = res;
+			}
+			if (document.getElementById("from").value == "far") {
+				const res = convert.fromFarenheit(
+					document.getElementById("to").value,
+					parseInt(document.getElementById("num1").value)
+				);
+				document.getElementById("result").value = res;
+			}
+		}
+		function change() {
+			document.body.style.backgroundColor = document.getElementById("color").value;
+		}
+	</script>
+</html>
